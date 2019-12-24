@@ -1,12 +1,14 @@
 package fr.polytech.cryptodnf
 
+import java.math.BigInteger
+
 fun main(args : Array<String>) {
     val bob = Bob()
     val alice = Alice()
 
     bob.encryptX()
 
-    val res : Vector = alice.apply(bob.X)
-    println(bob.multiply(res))
-
+    val conj : Vector = alice.apply(bob.X)
+    val res = bob.multiply(conj)
+    println("Result " + (res === BigInteger.ZERO))
 }

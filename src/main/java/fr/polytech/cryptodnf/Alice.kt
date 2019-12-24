@@ -31,7 +31,7 @@ class Alice(
         DNF.add(conjunction2)
 
         println()
-        println(DNF)
+        println("Secret DNF $DNF")
     }
 
     fun negation() {
@@ -43,22 +43,28 @@ class Alice(
     }
 
     fun apply(vector: Vector): Vector {
+
         val res = Vector(DNF.formula.size)
 
         for (i in 0 until DNF.formula.size){
-           var temp = BigInteger.ONE
+           var temp = Bob.encryptWithPublicKey(BigInteger.ZERO)
            val conjunction = DNF.formula[i]
            for (j in 0 until conjunction.size()){
                val operand = conjunction.get(j)
                val xj = vector[operand.first-1]
-               val cxj = /* if(operand.second){
-                   Bob.encryptWithPublicKey(BigInteger.ONE)*Bob.encryptWithPublicKey(xj).pow(-1)
-               }else{*/
-                   Bob.encryptWithPublicKey(xj)
-//               }
+               val cxj =  if(operand.second){
+                   //negation
+                   Bob.encryptWithPublicKey(BigInteger.ONE)*xj.modInverse(Bob.publicKey*Bob.publicKey)
+               }else{
+                  xj
+               }
+               //println("decr. x$j " + Bob.decrypt(cxj))
                temp *= cxj
            }
-            res[i] = temp* BigInteger.valueOf(-3)
+            //println("decr. sum$i " + Bob.decrypt(temp))
+            //substract 3
+            res[i] = temp*Bob.encryptWithPublicKey(BigInteger.ZERO)*(Bob.encryptWithPublicKey(BigInteger.valueOf(3))).modInverse(Bob.publicKey*Bob.publicKey)
+            //println("decr. res$i " + Bob.decrypt(res[i]))
         }
 
         return res
