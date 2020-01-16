@@ -65,7 +65,7 @@ class Alice {
             }
 //            println("decr. sum$i " + Bob.decrypt(temp))
             //substract 3
-            res[i] = temp * Bob.encryptWithPublicKey(BigInteger.valueOf(3)).modInverse(Bob.publicKey*Bob.publicKey)
+            res[i] = temp * Bob.encryptWithPublicKey(BigInteger.valueOf(conjunction.size().toLong())).modInverse(Bob.publicKey*Bob.publicKey)
 //            println("decr. res$i " + Bob.decrypt(res[i]))
         }
 
