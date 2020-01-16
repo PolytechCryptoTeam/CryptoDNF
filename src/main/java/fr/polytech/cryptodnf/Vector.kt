@@ -2,6 +2,7 @@ package fr.polytech.cryptodnf
 
 import java.math.BigInteger
 import java.io.Serializable
+import kotlin.collections.ArrayList
 
 class Vector(
         private var _numberOfDimensions: Int = 2
@@ -43,6 +44,11 @@ class Vector(
     private fun checkIndexOrThrow(index: Int) {
         if (!checkIndex(index))
             throw IndexOutOfBoundsException("Index $index is out of bound (size = $_numberOfDimensions).")
+    }
+
+    fun shuffle(): Vector {
+        array.toMutableList().shuffle()
+        return this
     }
 
     fun getElement(index: Int): BigInteger {

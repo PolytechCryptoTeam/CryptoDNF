@@ -13,10 +13,10 @@ class Bob{
         fun encryptWithPublicKey(value: BigInteger): BigInteger {
             return paillier.encrypt(value)
         }
-//
-//        fun decrypt(value: BigInteger): BigInteger {
-//            return paillier.decryptToBigInteger(value)
-//        }
+
+        fun decrypt(value: BigInteger): BigInteger {
+            return paillier.decryptToBigInteger(value)
+        }
     }
 
     private var n: Int = 10
@@ -41,7 +41,7 @@ class Bob{
     }
 
     fun multiply(res: Vector): BigInteger{
-//        println(res.map { vec -> paillier.decryptToBigInteger(vec)}.joinToString())
+//        println(res.map { vec -> paillier.decryptToBigInteger(vec)}.joinToString(" , "))
         var temp : BigInteger = BigInteger.ONE
         for (i in 0 until res.size){
             temp *= paillier.decryptToBigInteger(res[i])

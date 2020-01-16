@@ -8,7 +8,7 @@ fun main(args : Array<String>) {
 
     bob.encryptX()
 
-    val conj : Vector = alice.apply(bob.X)
+    val conj : Vector = alice.dnf(bob.X)
     val res = bob.multiply(conj)
     println("Result " + (res === BigInteger.ZERO))
 }
