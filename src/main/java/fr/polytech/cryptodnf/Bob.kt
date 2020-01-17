@@ -7,7 +7,7 @@ import kotlin.random.Random
 class Bob{
 
     companion object{
-        private var paillier = Paillier.randomCryptaception()
+        var paillier = Paillier.randomCryptaception()
         var publicKey = paillier.publicKey
 
         fun encryptWithPublicKey(value: BigInteger): BigInteger {
