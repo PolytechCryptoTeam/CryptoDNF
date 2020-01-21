@@ -5,6 +5,7 @@ import fr.polytech.cryptodnf.dnf.DNF
 import java.math.BigInteger
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.random.Random.Default.nextInt
 
 class Alice {
     private var DNF: DNF = DNF()
@@ -36,14 +37,6 @@ class Alice {
         println("Secret DNF $DNF")
     }
 
-    fun negation() {
-        throw NotImplementedError()
-    }
-
-    fun conjonction() {
-        throw NotImplementedError()
-    }
-
     fun apply(vector: Vector): Vector {
 
         val res = Vector(DNF.formula.size)
@@ -54,8 +47,9 @@ class Alice {
             for (j in 0 until conjunction.size()) {
                 val operand = conjunction.get(j)
                 val xj = vector[operand.first - 1]
+
+                // Negative if necessary
                 val cxj = if (operand.second) {
-                    //negation
                     Bob.encryptWithPublicKey(BigInteger.ONE) * xj.modInverse(Bob.publicKey * Bob.publicKey)
                 } else {
                     xj
@@ -64,8 +58,15 @@ class Alice {
                 temp *= cxj
             }
 //            println("decr. sum$i " + Bob.decrypt(temp))
-            //substract 3
+
+            // Subtract 3
             res[i] = temp * Bob.encryptWithPublicKey(BigInteger.valueOf(conjunction.size().toLong())).modInverse(Bob.publicKey*Bob.publicKey)
+//            println("decr. res$i " + Bob.decrypt(res[i]))
+
+//             Multiply by random value
+            val randomValue = nextRandomBigInteger(Bob.publicKey)
+
+            res[i] = res[i].modPow(randomValue, Bob.publicKey*Bob.publicKey)
 //            println("decr. res$i " + Bob.decrypt(res[i]))
         }
 
@@ -93,7 +94,7 @@ class Alice {
     }
 
     fun randomize(vector: Vector): Vector {
-        var rand = vector.shuffle()
+        val rand = vector.shuffle()
         return rand
     }
 

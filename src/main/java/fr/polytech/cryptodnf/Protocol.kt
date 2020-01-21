@@ -12,11 +12,13 @@ fun main(args : Array<String>) {
 
     val conj : Vector = alice.dnf(bob.X)
 
-
+    // With multiply protocol
     val encryptedMult = resolveWithMultiplicationProtocol(conj,Bob.paillier)
     val decryptedMult=Bob.decrypt(encryptedMult)
 
+    // Without multiply protocol
     //val decryptedMult = bob.multiply(conj)
+
     println("Result " + (decryptedMult === BigInteger.ZERO))
 }
 
