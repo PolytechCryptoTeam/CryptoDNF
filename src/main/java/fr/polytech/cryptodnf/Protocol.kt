@@ -3,6 +3,7 @@ package fr.polytech.cryptodnf
 import fr.polytech.berger.cryptaception.Paillier
 import fr.polytech.cryptoprojet.ProtocoleMultiplication
 import java.math.BigInteger
+import kotlin.system.measureTimeMillis
 
 fun main(args : Array<String>) {
     val bob = Bob()
@@ -13,13 +14,19 @@ fun main(args : Array<String>) {
     val conj : Vector = alice.dnf(bob.X)
 
     // With multiply protocol
-    val encryptedMult = resolveWithMultiplicationProtocol(conj,Bob.paillier)
-    val decryptedMult=Bob.decrypt(encryptedMult)
+    val executionTimeMultiplyProtocol = measureTimeMillis {
+        val encryptedMult = resolveWithMultiplicationProtocol(conj, Bob.paillier)
+        val decryptedMult = Bob.decrypt(encryptedMult)
+        println("\nResult with multiply protocol = " + (decryptedMult === BigInteger.ZERO))
+    }
+    println("Execution time (multiplication protocol) : $executionTimeMultiplyProtocol ms")
 
     // Without multiply protocol
-    //val decryptedMult = bob.multiply(conj)
-
-    println("Result " + (decryptedMult === BigInteger.ZERO))
+    val executionTimeWithoutMultiplyProtocol = measureTimeMillis {
+        val decryptedWithoutMult = bob.multiply(conj)
+        println("\nResult without multiply protocol = " + (decryptedWithoutMult === BigInteger.ZERO))
+    }
+    println("Execution time (without multiplication protocol) : $executionTimeWithoutMultiplyProtocol ms")
 }
 
 // we apply the multiplication protocol to resolve the DNF
@@ -28,7 +35,7 @@ fun main(args : Array<String>) {
 // If one of the clause is 0 then the result will be 0
 // Hence it is a correct AND statement
 // return: encryption of AND statement
-public fun resolveWithMultiplicationProtocol(conj: Vector, paillier: Paillier): BigInteger {
+fun resolveWithMultiplicationProtocol(conj: Vector, paillier: Paillier): BigInteger {
     // cf
     val protocoleMultiplication = ProtocoleMultiplication(paillier)
     var encryptedMult = conj[0]
