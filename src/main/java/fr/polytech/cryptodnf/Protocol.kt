@@ -3,10 +3,15 @@ package fr.polytech.cryptodnf
 import fr.polytech.berger.cryptaception.Paillier
 import fr.polytech.cryptoprojet.ProtocoleMultiplication
 import java.math.BigInteger
+import java.util.*
 import kotlin.system.measureTimeMillis
 
 fun main(args : Array<String>) {
-    val bob = Bob()
+    val sc = Scanner(System.`in`)
+    println("Veuillez saisir le nb de bits à tester sur la DNF (4 au minimum) :")
+    val n = sc.nextInt()
+
+    val bob = Bob(n)
     val alice = Alice()
 
     bob.encryptX()

@@ -4,7 +4,7 @@ import fr.polytech.berger.cryptaception.Paillier
 import java.math.BigInteger
 import kotlin.random.Random
 
-class Bob{
+class Bob(var n: Int){
 
     companion object{
         var paillier = Paillier.randomCryptaception()
@@ -19,7 +19,7 @@ class Bob{
         }
     }
 
-    private var n: Int = 10
+    //private var n: Int = 10
     private var x: Vector = Vector(n)
     var X: Vector = Vector(n)
 
